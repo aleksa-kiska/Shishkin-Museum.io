@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT&display=swap" rel="stylesheet">
+  <title>Галерея картин И. И. Шишкина</title>
+  <style>
+    body {
+      font-family: 'Old Standard TT', serif;
+  background-color: #f5f0eb;
+  background-image: url('paintings/pattern-light.png');
+  background-repeat: repeat;
+  background-size: auto;
+  margin: 0;
+  padding: 0;
+  color: #3e2f23;
+}
+    header {
+      background-color: #8b5e3c;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .gallery-item {
+      background-color: #f3e5d0;
+      border: 2px solid #8b5e3c;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .gallery-item:hover {
+      transform: scale(1.05);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+    .caption {
+      padding: 0.5rem;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+    .search {
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #f7e7d2;
+      border-radius: 8px;
+    }
+    input[type="text"] {
+      width: 80%;
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #8b5e3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Old Standard TT', serif;
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+    padding: 0.5rem;
+  }
+
+  .container {
+    margin: 1rem auto;
+    padding: 0 0.5rem;
+  }
+
+  .gallery-item img {
+    height: 200px;
+  }
+
+  .search {
+    padding: 0.5rem;
+  }
+
+  .search h2 {
+    font-size: 1.2rem;
+  }
+
+  .search div {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search input[type="text"] {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .search button {
+    width: 100%;
+  }
+
+  .search span {
+    right: 15px;
+  }
+
+  .caption {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-item img {
+    height: 150px;
+  }
+
+  .caption {
+    font-size: 0.8rem;
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  input[type="text"] {
+    font-size: 0.9rem;
+  }
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Галерея картин Ивана Ивановича Шишкина</h1>
+  </header>
+
+  <div class="container">
+
+    <section class="search">
+      <div style="padding: auto; background-color: #f7e6cc; border-radius: 10px;">
+        <h2 style="font-weight: bold; text-align: center;">Поиск картин</h2>
+        <div class="search-bar">
+          
+          <!-- Кнопка "На главную" -->
+          <button
+            onclick="goToHome()"
+            style="padding: 10px 15px; background-color: #a06c3f; color: white; border: none; border-radius: 5px; cursor: pointer; white-space: nowrap;"
+          >
+            ⟵ На главную
+          </button>
+      
+          <!-- Поле ввода и кнопка очистки -->
+          <div style="position: relative; flex-grow: 1;">
+            <input
+              type="text"
+              placeholder="Введите название картины..."
+              style="width: 100%; padding: 10px 35px 10px 10px; font-size: 16px; box-sizing: border-box;"
+              id="searchInput"
+              oninput="handleInput()"
+            >
+            <span
+              onclick="clearSearch()"
+              style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; font-weight: bold; font-size: 18px; color: #8b5e3c;"
+            >×</span>
+          </div>
+      
+          <!-- Кнопка поиска -->
+          <button
+            onclick="searchPainting()"
+            style="padding: 10px 20px; background-color: #a06c3f; color: white; border: none; border-radius: 5px; cursor: pointer;"
+          >
+            Поиск
+          </button>
+        </div>
+      </div>            
+      <div id="searchResult" style="margin-top: 1rem;"></div>
+    </section>    
+
+      <div class="gallery">
+        <div class="gallery-item" onclick="openPaintingPage(
+          'Утро в сосновом лесу (1889)',
+          'paintings/утро_в_сосновом_лесу.jpg',
+          `<p style='text-align: left; text-indent: 1.5em;'>
+    Картина Ивана Шишкина «Утро в сосновом лесу» (<strong>1889</strong>) изображает величественный сосновый лес, погружённый в утренний туман. Сквозь густые стволы деревьев пробиваются мягкие лучи солнца, освещая лесную чащу. На переднем плане изображены три медвежонка, играющих на поваленных деревьях, и медведица, что придаёт сцене живость и динамичность. Мастерство художника проявляется в детальной передаче текстур коры, мха и листвы, а также в создании атмосферы спокойствия и умиротворения, характерной для русской природы.
+  </p>
+  <p style='text-align: left; text-indent: 1.5em;'>
+    История создания картины связана с сотрудничеством Ивана Шишкина и Константина Савицкого. Первоначально Шишкин написал пейзаж без животных, а Савицкий добавил медвежат, оживив композицию. После завершения работы картина была представлена на Передвижной выставке в <strong>1889</strong> году и вскоре приобретена Павлом Третьяковым за 4000 рублей. Однако после покупки подпись Савицкого была удалена, и картина стала ассоциироваться исключительно с именем Шишкина. В настоящее время оригинал картины находится в Государственной Третьяковской галерее в Москве и является одним из самых узнаваемых произведений русской живописи.</p>`)">
+          <img src="paintings/утро_в_сосновом_лесу.jpg" alt="Утро в сосновом лесу">
+          <div class="caption">Утро в сосновом лесу (1889)</div>
+        </div>
+      
+        <div class="gallery-item" onclick="openPaintingPage(
+          'Рожь (1878)',
+          'paintings/рожь.jpg',
+          'Картина передаёт дух русской природы — бескрайнее поле ржи, залитое солнечным светом, с одинокими соснами и небом.')">
+          <img src="paintings/рожь.jpg" alt="Рожь">
+          <div class="caption">Рожь (1878)</div>
+        </div>
+      
+        <div class="gallery-item" onclick="openPaintingPage(
+          'Дождь в дубовом лесу (1891)',
+          'paintings/дождь_в_дубовом_лесу.jpg',
+          'Работа выполнена в поздний период творчества. На картине изображён дубовый лес под дождём — глубокий, спокойный, живой.')">
+          <img src="paintings/дождь_в_дубовом_лесу.jpg" alt="Дождь в дубовом лесу">
+          <div class="caption">Дождь в дубовом лесу (1891)</div>
+        </div>
+      
+        <div class="gallery-item" onclick="openPaintingPage(
+          'В окрестностях Дюссельдорфа (1865)',
+          'paintings/в_окрестностях_дюссельдорфа.jpg',
+          'Одна из ранних работ, созданная во время учёбы Шишкина в Германии. Пейзаж отличается европейской композицией и детализацией.')">
+          <img src="paintings/в_окрестностях_дюссельдорфа.jpg" alt="В окрестностях Дюссельдорфа">
+          <div class="caption">В окрестностях Дюссельдорфа (1865)</div>
+        </div>
+      
+        <div class="gallery-item" onclick="openPaintingPage(
+          'На севере диком (1891)',
+          'paintings/на_севере_диком.jpg',
+          'Название картины отсылает к стихотворению Лермонтова. На переднем плане — сосна, выросшая на скале среди суровой северной природы.')">
+          <img src="paintings/на_севере_диком.jpg" alt="На севере диком">
+          <div class="caption">На севере диком (1891)</div>
+        </div>
+
+        <div class="gallery-item" onclick="openPaintingPage(
+          'Песчаный берег (1879)',
+          'paintings/песчаный_берег.jpg',
+          'Описание')">
+          <img src="paintings/песчаный_берег.jpg" alt="Песчаный берег">
+          <div class="caption">Песчаный берег (1879)</div>
+        </div>
+
+        <div class="gallery-item" onclick="openPaintingPage(
+          'Сосновый бор. Мачтовый лес в Вятской губернии (1872)',
+          'paintings/сосновый_бор_мачтовый_лес_в_вятской_губернии.jpg',
+          'Описание')">
+          <img src="paintings/сосновый_бор_мачтовый_лес_в_вятской_губернии.jpg" alt="Сосновый бор. Мачтовый лес в Вятской губернии">
+          <div class="caption">Сосновый бор. Мачтовый лес в Вятской губернии (1872)</div>
+        </div>
+
+        <div class="gallery-item" onclick="openPaintingPage(
+          'Полдень. В окрестностях Москвы (1869)',
+          'paintings/полдень_в_окрестностях_москвы.jpg',
+          'Описание')">
+          <img src="paintings/полдень_в_окрестностях_москвы.jpg" alt="Полдень. В окрестностях Москвы">
+          <div class="caption">Полдень. В окрестностях Москвы (1869)</div>
+        </div>
+
+        <div class="gallery-item" onclick="openPaintingPage(
+          'Цветы на опушке леса (1893)',
+          'paintings/цветы_на_опушке_леса.jpg',
+          'Описание')">
+          <img src="paintings/цветы_на_опушке_леса.jpg" alt="Цветы на опушке леса">
+          <div class="caption">Цветы на опушке леса (1893)</div>
+        </div>
+
+        <div class="gallery-item" onclick="openPaintingPage(
+          'Сосновый лес (1889)',
+          'paintings/сосновый_лес.jpg',
+          'Описание')">
+          <img src="paintings/сосновый_лес.jpg" alt="Сосновый лес">
+          <div class="caption">Сосновый лес (1889)</div>
+        </div>
+
+        <div class="gallery-item" onclick="openPaintingPage(
+          'Уголок заросшего сада. Сныть-трава (1884)',
+          'paintings/уголок_заросшего_сада_сныть_трава.jpg',
+          'Описание')">
+          <img src="paintings/уголок_заросшего_сада_сныть_трава.jpg" alt="Уголок заросшего сада. Сныть-трава">
+          <div class="caption">Уголок заросшего сада. Сныть-трава (1884)</div>
+        </div>
+
+        <div class="gallery-item" onclick="openPaintingPage(
+          'Дорога во ржи (1866)',
+          'paintings/дорога_во_ржи.jpg',
+          'Описание')">
+          <img src="paintings/дорога_во_ржи.jpg" alt="Дорога во ржи">
+          <div class="caption">Дорога во ржи (1866)</div>
+        </div>
+      </div>      
+  </div>
+
+  <script>
+    function searchPainting() {
+  const query = document.getElementById('searchInput').value.trim().toLowerCase();
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  let found = false;
+
+  galleryItems.forEach(item => {
+    const caption = item.querySelector('.caption').textContent.toLowerCase();
+    if (caption.includes(query)) {
+      item.style.display = 'block';
+      found = true;
+    } else {
+      item.style.display = 'none';
+    }
+  });
+
+  const result = document.getElementById('searchResult');
+  if (!found && query !== '') {
+    result.innerHTML = '<p>Картина с таким названием не найдена.</p>';
+  } else {
+    result.innerHTML = '';
+  }
+}
+
+document.getElementById('searchInput').addEventListener('keydown', function(event) {
+  if (event.key === 'Enter') {
+    searchPainting();
+  }
+});
+  
+    function clearSearch() {
+      document.getElementById('searchInput').value = '';
+      showAllPaintings();
+      document.getElementById('searchResult').innerHTML = '';
+    }
+  
+    function handleInput() {
+      if (document.getElementById('searchInput').value.trim() === '') {
+        showAllPaintings();
+        document.getElementById('searchResult').innerHTML = '';
+      }
+    }
+  
+    function showAllPaintings() {
+      const galleryItems = document.querySelectorAll('.gallery-item');
+      galleryItems.forEach(item => {
+        item.style.display = 'block';
+      });
+    }
+  </script>  
+  <script>
+    function openPaintingPage(title, src, desc) {
+      const url = `painting.html?title=${encodeURIComponent(title)}&src=${encodeURIComponent(src)}&desc=${encodeURIComponent(desc)}`;
+      window.open(url, '_blank');
+    }
+  </script>  
+  <script>
+    function goToHome() {
+      window.location.href = 'index.html'; // Укажи путь к главной странице
+    }
+  </script>  
+</body>
+</html>
